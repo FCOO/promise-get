@@ -57,11 +57,54 @@
         }
    
 
-//http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt
-    
+        function readTextFile(withError){
+            Promise.getText( 
+                //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt', 
+                withError ? 'data/donotexist.txt' : 'data/demo.txt', {
+                    resolve: function( text ){ console.log('getText => ', text ); }
+                }
+           );
+        }
+
+        function readJSONFile(withError){
+            Promise.getJSON( 
+                //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt', 
+                withError ? 'data/witherror.json' : 'data/demo.json', {
+                    retries: 3,
+                    retryDelay: 1000,
+                    resolve: function( json ){ console.log('getJSON => ', json ); }
+                }
+           );
+        }
+
+        function readXMLFile(withError){
+            Promise.getXML( 
+                withError ? 'data/witherror.xml' : 'data/demo.xml', {
+                    resolve: function( xml ){ console.log('getXML => ', xml ); }
+                }
+           );
+        }
+        
+        
+        Promise.defaultErrorHandler = function( reason ){
+            console.log('*********************');
+            console.log('My error-handler');
+            console.log(reason);
+            console.log('*********************');
+        }
+
     </script>
 
-    <button onClick="javascript:demoInConsole()">Run demo in console</button>
-    <button onClick="javascript:demoInConsole(true)">Run demo in console with error</button>
+    <button onClick="javascript:demoInConsole()">Run demo in console</button><br>
+    <button onClick="javascript:demoInConsole(true)">Run demo in console with error</button><br>
+    <hr>
+    <button onClick="javascript:readTextFile()">Read text file</button><br>
+    <button onClick="javascript:readTextFile(true)">Read text file Not Found</button><br>
+    <hr>
+    <button onClick="javascript:readJSONFile()">Read JSON file</button><br>
+    <button onClick="javascript:readJSONFile(true)">Read JSON file with syntax error</button><br>
+    <hr>
+    <button onClick="javascript:readXMLFile()">Read XML file</button><br>
+    <button onClick="javascript:readXMLFile(true)">Read XML file with syntax error</button><br>
 </body>
 </html>

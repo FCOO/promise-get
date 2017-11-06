@@ -1,15 +1,15 @@
 /****************************************************************************
-	promise-get.js,
+    promise-get.js,
 
-	(c) 2017, FCOO
+    (c) 2017, FCOO
 
-	https://github.com/FCOO/promise-get
-	https://github.com/FCOO
+    https://github.com/FCOO/promise-get
+    https://github.com/FCOO
 
 ****************************************************************************/
 
 (function ($, window, Promise/*, document, undefined*/) {
-	"use strict";
+    "use strict";
 
     //Convert a reason to error-object
     Promise.convertReasonToError = function( reason ){
@@ -49,6 +49,7 @@
             cache     : 'reload',  //TODO: Check if it works
             headers   : {
                 "Cache-Control": 'no-cache'    //TODO: Check if this works
+
             }
         }, options || {});
 
@@ -84,10 +85,10 @@
     finally || options.finally || options.always = function( ?? )
 
     options
-        retry: 0
+        retries: 0
         context: null
         format: null (text,json, xml)
-        useDefaultErrorHandler: true => use defaultErrorHandler if no reject-function is given
+        useDefaultErrorHandler: true => use defaultErrorHandler even if a reject-function is given
 
     **************************************************************/
     function checkStatus(response) {
@@ -101,28 +102,27 @@
         }
     }
 
-    /*
-    // Cross-browser xml parsing from jQuery
-    jQuery.parseXML = function( data ) {
-	    var xml, tmp;
-    	if ( !data || typeof data !== "string" ) {
-	    	return null;
-    	}
 
-    	// Support: IE9
-	    try {
-		    tmp = new DOMParser();
-    		xml = tmp.parseFromString( data, "text/xml" );
-	    } catch ( e ) {
-		    xml = undefined;
-	    }
+    function parseXML( response ){
+        //Adjusted xml-parser from jQuery.jQuery.parseXML
+        var xml;
 
-    	if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
-	    	jQuery.error( "Invalid XML: " + data );
-	    }
-	    return xml;
-    };
-*/
+        // Support: IE 9 - 11 only
+        // IE throws on parseFromString with invalid input.
+        try {
+            xml = ( new window.DOMParser() ).parseFromString( response, "text/xml" );
+        }
+        catch ( e ) {
+            xml = undefined;
+        }
+
+        if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
+            var error = new Error("Invalid XML");
+            error.response = response;
+            throw error;
+        }
+        return xml;
+    }
 
 
     Promise.get = function(url, options, resolve, reject, fin) {
@@ -162,8 +162,8 @@
             case 'xml' :
                 result =
                     result
-                        .then( function(response) { return response.text(); });
-                        //TODO .then( convertXML )
+                        .then( function(response) { return response.text(); })
+                        .then( parseXML );
                 break;
         }
 
@@ -218,12 +218,21 @@
                             resolve, reject, fin );
     };
 
+    /**************************************************************
+    Promise.getXML( url, options[, resolve[, reject[, finally]]] )
+    Same as Promise.get with format = 'xml'
+    **************************************************************/
+    Promise.getXML = function(url, options, resolve, reject, fin) {
+        return Promise.get( url,
+                            $.extend( {}, options , { format: 'xml' }),
+                            resolve, reject, fin );
+    };
 
 
-	//Initialize/ready
-	$(function() {
+    //Initialize/ready
+    $(function() {
 
-	});
+    });
 
-}(jQuery, this, document, Promise));
+}(jQuery, this, Promise, document));
 
