@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="da" style="font-size: 100%">
+<head>
+	<title>fcoo.dk - promise-get - Demo</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+
+	<meta name='copyright' content='FCOO'>
+	<meta name='owner' content='FCOO'>
+</head>
+
+<body>
+	<script src="bower_components.js"></script>
+	<script src="../src/promise-get.js"></script>
+	<script>
+        function demoInConsole(withError){
+    
+            var p1 = new Promise(function(resolve, reject) {
+//              console.log('inside ONE');
+                if (withError)
+                    setTimeout(reject, 100, new Error("one-100"));
+                else
+                    setTimeout(resolve, 500, "one-500");
+            });
+            var p2 = new Promise(function(resolve, reject) {
+//              console.log('inside TWO');
+                setTimeout(resolve, 1000, "two-1000");
+            });
+            var p3 = new Promise(function(resolve, reject) {
+//              console.log('inside TREE');
+                setTimeout(resolve, 800, "tree-800");
+            });
+
+            var pList = [p1,p2,p3];
+
+            console.log('Promise.some( pList, 2) >>>>');
+            Promise.some( pList, 2)
+                .then(  function( response ){ console.log('some', response); })
+                .catch( function( error    ){ console.log('some ERROR', error ); })
+
+            console.log('Promise.any( pList ) >>>>');
+            Promise.any( pList)
+                .then(  function( response ){ console.log('any', response); })
+                .catch( function( error    ){ console.log('any ERROR', error ); })
+
+            console.log('Promise.race( pList ) >>>>');
+            Promise.race( pList )
+                .then(function( response){ console.log('race', response); })
+                .catch( function( error ){ console.log('race ERROR', error ); });
+
+            console.log('Promise.each( pList ) >>>>');
+            Promise.each( pList, function( response, index, length ){
+                console.log('each', response, index, length );
+            })
+            .catch( function( error ){ console.log('each ERROR', error ); });
+        }
+   
+
+//http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt
+    
+    </script>
+
+    <button onClick="javascript:demoInConsole()">Run demo in console</button>
+    <button onClick="javascript:demoInConsole(true)">Run demo in console with error</button>
+</body>
+</html>

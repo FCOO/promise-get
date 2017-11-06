@@ -1,0 +1,33 @@
+{
+    "name": "promise-get",
+    "version": "0.0.0",
+    "homepage": "https://github.com/FCOO/promise-get",
+    "authors": [
+        "NielsHolt"
+    ],
+    "description": "",
+    "main": [
+        "dist/promise-get.js"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/FCOO/promise-get.git"
+    },
+    "dependencies": {
+        "jquery": "latest",
+        "fetch": "^2.0.3",
+        "bluebird": "^3.5.1"
+    },
+    "devDependencies": {},
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "moduleType": [
+        "es6"
+    ]
+}
