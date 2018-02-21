@@ -20,21 +20,27 @@
         result.message = reason.message || '';
         result.url     = response.url || '';
         result.status  = response.status || '';
-//TODO            error.responseText = ???
         return result;
     };
 
     //Create a default error-handle. Can be overwritten
-    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* reason */ ){};
+    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* reason, url */ ){};
 
     //Set event handler for unhandled rejections
     window.onunhandledrejection = function(e){
         if (e && e.preventDefault)
             e.preventDefault();
 
-        if (e && e.detail)
+        if (e && e.detail){
+            var reason = e.detail.reason || {},
+                promise = e.detail.promise,
+                promiseOptions = promise.promiseOptions || {},
+                response = reason.response || {},
+                url = response.url || promiseOptions.url || '';
+
             //Call default error handler
-            Promise.defaultErrorHandler( e.detail.reason || {} );
+            Promise.defaultErrorHandler( reason, url );
+        }
     };
 
     /**************************************************************
@@ -118,7 +124,7 @@
 
         if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
             var error = new Error("Invalid XML");
-            error.response = response;
+            //error.response = response;
             throw error;
         }
         return xml;
@@ -128,6 +134,7 @@
     Promise.get = function(url, options, resolve, reject, fin) {
         options = $.extend({}, {
             //Default options
+            url: url,
             useDefaultErrorHandler: true,
             retries               : 0
         }, options || {} );
@@ -174,7 +181,7 @@
         if (reject){
             //If options.useDefaultErrorHandler => also needs to call => Promise.defaultErrorHandler
             if (options.useDefaultErrorHandler)
-                result = result.catch( function(){
+                result = result.catch( function( /*reason, url */ ){
                     reject.apply( null, arguments );
                     return Promise.defaultErrorHandler.apply( null, arguments );
                 });
@@ -194,7 +201,7 @@
         if (fin)
             result = result.finally( fin );
 
-
+        result.promiseOptions = options;
         return result;
     };
 
