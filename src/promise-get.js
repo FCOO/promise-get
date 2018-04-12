@@ -53,10 +53,11 @@
             retries   : 3,
             retryDelay: 1000,
             cache     : 'reload',  //TODO: Check if it works
+/*REMOVE FOR NOW. NEED TO FIND A WAY TO FORCE NO-CACHE
             headers   : {
                 "Cache-Control": 'no-cache'    //TODO: Check if this works
-
             }
+*/
         }, options || {});
 
         return new Promise(function(resolve, reject) {
