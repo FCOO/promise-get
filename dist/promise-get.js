@@ -52,12 +52,20 @@
         options = $.extend( {}, {
             retries   : 3,
             retryDelay: 1000,
-            cache     : 'reload',  //TODO: Check if it works
+            noCache   : true,
+            //            cache     : 'reload',  //TODO: Check if it works
+/*REMOVE FOR NOW. NEED TO FIND A WAY TO FORCE NO-CACHE
             headers   : {
                 "Cache-Control": 'no-cache'    //TODO: Check if this works
-
             }
+*/
         }, options || {});
+
+        //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
+        if (options.noCache)
+            url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+
+
 
         return new Promise(function(resolve, reject) {
             var wrappedFetch = function(n) {
