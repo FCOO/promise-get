@@ -70,6 +70,7 @@
             Promise.getJSON(
                 //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
                 withError ? 'data/witherror.json' : 'data/demo.json', {
+                    noCache: true,
                     retries: 3,
                     retryDelay: 1000,
                     resolve: function( json ){ console.log('getJSON => ', json ); }
