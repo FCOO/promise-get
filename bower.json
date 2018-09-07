@@ -1,6 +1,6 @@
 {
   "name": "promise-get",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/FCOO/promise-get",
   "authors": [
     "NielsHolt"
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "jquery": "latest",
-    "fetch": "^2.0.3",
-    "bluebird": "^3.5.1"
+    "fetch": "latest",
+    "bluebird": "latest"
   },
   "devDependencies": {},
   "license": "MIT",
