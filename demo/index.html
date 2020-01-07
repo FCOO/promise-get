@@ -14,6 +14,18 @@
 	<script src="bower_components.js"></script>
 	<script src="../src/promise-get.js"></script>
 	<script>
+        function myErrorHandler( error ){
+
+            console.log('*********************');
+            console.log('MY error-handler');
+            console.log('status=', error.status);
+            console.log('url=', error.url);
+            console.log('text=', error.text);
+            console.log('*********************');
+        }
+
+
+
         function demoInConsole(withError){
 
             var p1 = new Promise(function(resolve, reject) {
@@ -57,42 +69,49 @@
         }
 
 
-        function readTextFile(withError){
+        function readTextFile(withError, withReject){
             Promise.getText(
                 //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
                 withError ? 'data/donotexist.txt' : 'data/demo.txt', {
-                    resolve: function( text ){ console.log('getText => ', text ); }
+                    resolve: function( text ){ console.log('getText => ', text ); },
+                    reject : withReject ? myErrorHandler : null
                 }
            );
         }
 
-        function readJSONFile(withError){
+        function readJSONFile(withError, withReject){
             Promise.getJSON(
                 //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
                 withError ? 'data/witherror.json' : 'data/demo.json', {
                     noCache: true,
                     retries: 3,
                     retryDelay: 1000,
-                    resolve: function( json ){ console.log('getJSON => ', json ); }
+                    resolve: function( json ){ console.log('getJSON => ', json ); },
+                    reject : withReject ? myErrorHandler : null,
+
                 }
            );
         }
 
-        function readXMLFile(withError){
+        function readXMLFile(withError, withReject){
             Promise.getXML(
                 withError ? 'data/witherror.xml' : 'data/demo.xml', {
-                    resolve: function( xml ){ console.log('getXML => ', xml ); }
+                    resolve: function( xml ){ console.log('getXML => ', xml ); },
+                    reject : withReject ? myErrorHandler : null
                 }
            );
         }
 
 
-        Promise.defaultErrorHandler = function( reason, url ){
+        Promise.defaultErrorHandler = function( error ){
             console.log('*********************');
-            console.log('My error-handler');
-            console.log('url=', url);
+            console.log('DEFAULT error-handler');
+            console.log('status=', error.status);
+            console.log('url=', error.url);
+            console.log('text=', error.text);
             console.log('*********************');
         }
+
 
     </script>
 
@@ -101,11 +120,14 @@
     <hr>
     <button onClick="javascript:readTextFile()">Read text file</button><br>
     <button onClick="javascript:readTextFile(true)">Read text file Not Found</button><br>
+    <button onClick="javascript:readTextFile(true, true)">Read text file Not Found, with own error-handler</button><br>
     <hr>
     <button onClick="javascript:readJSONFile()">Read JSON file</button><br>
     <button onClick="javascript:readJSONFile(true)">Read JSON file with syntax error</button><br>
+    <button onClick="javascript:readJSONFile(true, true)">Read JSON file with syntax error, with own error-handler</button><br>
     <hr>
     <button onClick="javascript:readXMLFile()">Read XML file</button><br>
     <button onClick="javascript:readXMLFile(true)">Read XML file with syntax error</button><br>
+    <button onClick="javascript:readXMLFile(true, true)">Read XML file with syntax error, with own error-handler</button><br>
 </body>
 </html>

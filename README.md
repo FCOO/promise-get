@@ -24,13 +24,17 @@ http://FCOO.github.io/promise-get/demo/
 
 A default error handler is added to `Promise`
 
-	Promise.defaultErrorHandler [function( reason )]
+	Promise.defaultErrorHandler [function( errorObject: ERROR_OBJECT )]
+    ERROR_OBJECT = {
+        name      : "Error",
+        status    : INTEGER,
+        message   : STRING, 
+        text      : STRING,
+        statusText: STRING
+    }
+    //message = text = statusText
 
 Every `Promise` that fails and don't have a `.catch` will end in `Promise.defaultErrorHandler`
-
-To convert `reason` to a `error-object` a converter is defined
-	
-	Promise.convertReasonToError [function( reason )] //=> Error-object
 
 ### Get methods
 
@@ -45,7 +49,7 @@ To convert `reason` to a `error-object` a converter is defined
     function( response )
 
 ##### reject 
-	function( e )
+	function( errorObject: ERROR_OBJECT )
 
 ##### finally
 	function() 
@@ -55,17 +59,15 @@ To convert `reason` to a `error-object` a converter is defined
 | :--: | :--: | :-----: | --- |
 | `resolve` | `function( response )` | `null` | Alternative for parameter `resolve` |
 | `done` | `function( response )` | `null` | Alternative for parameter `resolve` |
-| `reject` | `function( e )` | `null` | Alternative for parameter `reject` |
-| `fail` | `function( e )` | `null` | Alternative for parameter `reject` |
+| `reject` | `function( errorObject: ERROR_OBJECT )` | `null` | Alternative for parameter `reject` |
+| `fail` | `function( errorObject: ERROR_OBJECT )` | `null` | Alternative for parameter `reject` |
 | `finally` | `function()` | `null` | Alternative for parameter `finally` |
 | `always` | `function()` | `null` | Alternative for parameter `finally` |
 | `retries` | `number` | `0`| Number Alternative for parameter `finally` |
 | `retryDelay` | `number` | `0` | ms between retries |
 | `format` | `string` | `"text/plain"` | Format |
-| `useDefaultErrorHandler` | `boolean` | `false` | If `true` the default error handler is also called even if a `reject-function` |
+| `useDefaultErrorHandler` | `boolean` | `true` | If `true` the default error handler is also called even if a `reject-function` is given. `{reject: null, useDefaultErrorHandler:false}` => No error cached |
 | `headers` etc. | | | Standard options for fetch |
-
-
 
 ## Copyright and License
 This plugin is licensed under the [MIT license](https://github.com/FCOO/promise-get/LICENSE).
