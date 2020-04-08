@@ -57,7 +57,7 @@
         options = $.extend( {}, {
             retries   : 3,
             retryDelay: 1000,
-            noCache   : true,
+            noCache   : false,
             //            cache     : 'reload',  //TODO: Check if it works
 /*REMOVE FOR NOW. NEED TO FIND A WAY TO FORCE NO-CACHE
             headers   : {
