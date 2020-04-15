@@ -47,6 +47,11 @@
         return Promise.defaultErrorHandler( createErrorObject( reason, url ) );
     }
 
+    //Promise.defaultPrefetch = function(url, options): To be called before ALL fetch
+    Promise.defaultPrefetch = null;
+
+    //Promise.defaultFinally = function(): To be called as finally for ALL Promise.get
+    Promise.defaultFinally = null;
 
     /**************************************************************
     Promise.fetch( url, options )
@@ -69,6 +74,9 @@
         //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
         if (options.noCache)
             url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+
+        if (Promise.defaultPrefetch)
+            Promise.defaultPrefetch(url, options);
 
         return new Promise(function(resolve, reject) {
             var wrappedFetch = function(n) {
@@ -210,8 +218,15 @@
                 result = result.catch( function(){} );
 
         //Adding finally (if any)
-        if (fin)
-            result = result.finally( fin );
+        if (fin || Promise.defaultFinally){
+            var finFunc =   fin && Promise.defaultFinally ?
+                            function(){
+                                fin.apply(null, arguments);
+                                Promise.defaultFinally.apply(null, arguments);
+                            } : fin || Promise.defaultFinally;
+
+            result = result.finally( finFunc );
+        }
 
         result.promiseOptions = options;
         return result;

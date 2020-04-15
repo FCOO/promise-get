@@ -36,6 +36,11 @@ A default error handler is added to `Promise`
 
 Every `Promise` that fails and don't have a `.catch` will end in `Promise.defaultErrorHandler`
 
+### Default pre-fetch and finnaly
+        
+    Promise.defaultPrefetch = function(url, options): To be called before ALL fetch
+    Promise.defaultFinally = function(): To be called as finally for ALL Promise.get
+
 ### Get methods
 
 	Promise.get( url, options[, resolve[, reject[, finally]]] ) 
