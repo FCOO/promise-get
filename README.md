@@ -47,6 +47,7 @@ Every `Promise` that fails and don't have a `.catch` will end in `Promise.defaul
 	Promise.get( url, options[, resolve[, reject[, finally]]] ) 
 	Promise.getText( url, options[, resolve[, reject[, finally]]] ) //Same as Promise.get with format = 'text'
     Promise.getJSON( url, options[, resolve[, reject[, finally]]] ); //Same as Promise.get with format = 'json'
+    Promise.getYAML( url, options[, resolve[, reject[, finally]]] ); //Same as Promise.get with format = 'yaml'
     Promise.getXML( url, options[, resolve[, reject[, finally]]] ); //Same as Promise.get with format = 'xml'
 
 #### Parametre and options

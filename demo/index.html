@@ -93,6 +93,20 @@
            );
         }
 
+        function readYAMLFile(withError, withReject){
+            Promise.getYAML(
+                //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
+                withError ? 'data/witherror.yaml.txt' : 'data/demo.yaml.txt', {
+                    noCache: true,
+                    retries: 3,
+                    retryDelay: 1000,
+                    resolve: function( json ){ console.log('getYAML (json) => ', json ); },
+                    reject : withReject ? myErrorHandler : null,
+
+                }
+           );
+        }
+
         function readXMLFile(withError, withReject){
             Promise.getXML(
                 withError ? 'data/witherror.xml' : 'data/demo.xml', {
@@ -124,6 +138,10 @@
     <button onClick="javascript:readJSONFile()">Read JSON file</button><br>
     <button onClick="javascript:readJSONFile(true)">Read JSON file with syntax error</button><br>
     <button onClick="javascript:readJSONFile(true, true)">Read JSON file with syntax error, with own error-handler</button><br>
+    <hr>
+    <button onClick="javascript:readYAMLFile()">Read YAML file</button><br>
+    <button onClick="javascript:readYAMLFile(true)">Read YAML file with syntax error</button><br>
+    <button onClick="javascript:readYAMLFile(true, true)">Read YAML file with syntax error, with own error-handler</button><br>
     <hr>
     <button onClick="javascript:readXMLFile()">Read XML file</button><br>
     <button onClick="javascript:readXMLFile(true)">Read XML file with syntax error</button><br>

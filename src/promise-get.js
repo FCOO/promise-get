@@ -128,6 +128,20 @@
     }
 
 
+    function parseYAML( response ){
+        var json;
+
+        try{
+            json = window.YAML.parse(response);
+        }
+        catch (e){
+            json = undefined;
+            var error = new Error("Invalid YAML");
+            throw error;
+        }
+        return json;
+    }
+
     function parseXML( response ){
         //Adjusted xml-parser from jQuery.jQuery.parseXML
         var xml;
@@ -182,6 +196,12 @@
                     result
                         .then( function(response) { return response.text(); })
                         .then( JSON.parse );
+                break;
+            case 'yaml':
+                result =
+                    result
+                        .then( function(response) { return response.text(); })
+                        .then( parseYAML );
                 break;
             case 'xml' :
                 result =
@@ -259,6 +279,17 @@
     Promise.getXML = function(url, options, resolve, reject, fin) {
         return Promise.get( url,
                             $.extend( {}, options , { format: 'xml' }),
+                            resolve, reject, fin );
+    };
+
+    /**************************************************************
+    Promise.getYAML( url, options[, resolve[, reject[, finally]]] )
+    Same as Promise.get with format = 'yaml'.
+    Data are converted to json
+    **************************************************************/
+    Promise.getYAML = function(url, options, resolve, reject, fin) {
+        return Promise.get( url,
+                            $.extend( {}, options , { format: 'yaml' }),
                             resolve, reject, fin );
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "promise-get",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "homepage": "https://github.com/FCOO/promise-get",
   "authors": "NielsHolt",
   "description": "",
@@ -12,7 +12,8 @@
   "dependencies": {
     "jquery": "latest",
     "bluebird": "latest",
-    "promise-polyfill": "^8.2.2"
+    "promise-polyfill": "^8.2.2",
+    "yaml.js": "jeremyfa/yaml.js#latest"
   },
   "overrides": {
     "promise-polyfill": {
