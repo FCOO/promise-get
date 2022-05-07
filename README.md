@@ -6,8 +6,9 @@
 Extensions to Promise and Bluebird
 
 Using 
+
 - [bluebird](http://bluebirdjs.com/docs/why-bluebird.html)
-- [fetch](https://github.com/github/fetch) (polyfill)
+- [promise-polyfill](https://github.com/taylorhakes/promise-polyfill) (polyfill)
 - and implement default error handling and get-methods
 
 ## Installation

@@ -1,22 +1,23 @@
 {
   "name": "promise-get",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "homepage": "https://github.com/FCOO/promise-get",
-  "authors": [
-    "NielsHolt"
-  ],
+  "authors": "NielsHolt",
   "description": "",
-  "main": [
-    "dist/promise-get.js"
-  ],
+  "main": "dist/promise-get.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/FCOO/promise-get.git"
   },
   "dependencies": {
     "jquery": "latest",
-    "fetch": "^2.0.4",
-    "bluebird": "latest"
+    "bluebird": "latest",
+    "promise-polyfill": "^8.2.2"
+  },
+  "overrides": {
+    "promise-polyfill": {
+      "main": "dist/polyfill.js"
+    }
   },
   "devDependencies": {},
   "license": "MIT",
