@@ -79,18 +79,19 @@
            );
         }
 
-        function readJSONFile(withError, withReject){
-            Promise.getJSON(
-                //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
-                withError ? 'data/witherror.json' : 'data/demo.json', {
-                    noCache: true,
-                    retries: 3,
-                    retryDelay: 1000,
-                    resolve: function( json ){ console.log('getJSON => ', json ); },
-                    reject : withReject ? myErrorHandler : null,
-
-                }
-           );
+        function readJSONFile(withError, withReject, doNotExists){
+            const fileName = withError   ?  'data/witherror.json' : 
+                             doNotExists ?  'data/notfound.json' :
+                                            'data/demo.json';
+            Promise.getJSON(fileName, {
+                noCache: true,
+                retries: 3,
+                retryDelay: 3*1000,
+                resolve: function( json ){ console.log('getJSON => ', json ); },
+                
+                useDefaultErrorHandler: !withReject,                
+                reject : withReject ? myErrorHandler : null,
+            });
         }
 
         function readYAMLFile(withError, withReject){
@@ -136,8 +137,9 @@
     <button onClick="javascript:readTextFile(true, true)">Read text file Not Found, with own error-handler</button><br>
     <hr>
     <button onClick="javascript:readJSONFile()">Read JSON file</button><br>
+    <button onClick="javascript:readJSONFile(false, false, true)">Read JSON file that do not exists. Retry 3 times with 3 sec interval</button><br>
     <button onClick="javascript:readJSONFile(true)">Read JSON file with syntax error</button><br>
-    <button onClick="javascript:readJSONFile(true, true)">Read JSON file with syntax error, with own error-handler</button><br>
+    <button onClick="javascript:readJSONFile(true, true)">Read JSON file with syntax error, with ONLY own error-handler</button><br>
     <hr>
     <button onClick="javascript:readYAMLFile()">Read YAML file</button><br>
     <button onClick="javascript:readYAMLFile(true)">Read YAML file with syntax error</button><br>

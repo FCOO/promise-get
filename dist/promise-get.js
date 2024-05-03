@@ -57,7 +57,36 @@
     Promise.fetch( url, options )
     Fetch the url.
     Retries up to options.retries times with delay between of options.retryDeday ms
+    Princip taken from https://medium.com/@yshen4/javascript-fetch-with-retry-fb7e2e8f8cad
+
+    Original code from https://medium.com/@yshen4/javascript-fetch-with-retry-fb7e2e8f8cad:
+
+    const wait = (delay) => (new Promise((resolve) => setTimeout(resolve, delay)));
+    Promise.fetchWithRetry = function(url, tries=2){
+        fetch(url)
+            .then( (response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    // 1. throw a new exception
+                    if (res.status === 401) throw new 4xxError('Not authorized', response)
+                    if (res.status === 404) throw new 4xxError(`Resource doesn't exist`, response)
+                    // 2. reject instead of throw, peferred
+                    return Promise.reject(response);
+                }
+            })
+            .catch( (error) => {
+                if (error instanceof 4xxError || tries < 1) {
+                    throw error;
+                } else {
+                    //Retry network error or 5xx errors
+                    const delay = Math.floor(Math.random() * 1000);
+                    wait(delay).then(()=> Promise.fetchWithRetry(url, tries - 1));
+                }
+            })
+    }
     **************************************************************/
+    const wait = (delay) => (new Promise((resolve) => setTimeout(resolve, delay)));
     Promise.fetch = function(url, options) {
         options = $.extend( {}, {
             retries   : 3,
@@ -75,27 +104,28 @@
         if (options.noCache)
             url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
 
-        if (Promise.defaultPrefetch)
+        if (Promise.defaultPrefetch && !options.noDefaultPrefetch)
             Promise.defaultPrefetch(url, options);
 
         return new Promise(function(resolve, reject) {
-            var wrappedFetch = function(n) {
-                fetch(url, options)
-                    .then(function(response) {
+            fetch(url, options)
+                .then((response) => {
+                    if (response.ok)
                         resolve(response);
-                    })
-                    .catch(function(error) {
-                        if (n > 0) {
-                            setTimeout(function() {
-                                wrappedFetch(--n);
-                            }, options.retryDelay);
-                        }
-                        else {
-                            reject(error);
-                        }
-                    });
-            };
-            wrappedFetch(options.retries);
+                    else
+                        return Promise.reject(response);
+                })
+                .catch((error) => {
+                    if (options.retries > 0){
+                        options.retries--;
+                        options.noCache = false;
+                        options.noDefaultPrefetch = true;
+                        wait(options.retryDelay)
+                            .then(()=> Promise.fetch(url, options) );
+                    }
+                    else
+                        reject(error);
+                });
         });
     };
 
