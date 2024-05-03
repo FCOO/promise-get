@@ -43,10 +43,6 @@
         Promise.defaultErrorHandler( createErrorObject( e, url ) );
     };
 
-    function callDefaultErrorHandle(reason, url){
-        return Promise.defaultErrorHandler( createErrorObject( reason, url ) );
-    }
-
     //Promise.defaultPrefetch = function(url, options): To be called before ALL fetch
     Promise.defaultPrefetch = null;
 
@@ -115,7 +111,7 @@
                     else
                         return Promise.reject(response);
                 })
-                .catch((error) => {
+                .catch((/*error*/reason) => {
                     if (options.retries > 0){
                         options.retries--;
                         options.noCache = false;
@@ -123,8 +119,15 @@
                         wait(options.retryDelay)
                             .then(()=> Promise.fetch(url, options) );
                     }
-                    else
-                        reject(error);
+                    else {
+
+                        //console.log('HER', error, reject, options);
+                        let error =  createErrorObject(reason, options.url);
+                        if (options.reject)
+                            options.reject(error);
+                        if (options.useDefaultErrorHandler)
+                            reject(error);
+                    }
                 });
         });
     };
@@ -243,29 +246,6 @@
 
         if (resolve)
             result = result.then( resolve );
-
-        //Adding error/reject promise
-        var defaultReject = function(reason){
-                return callDefaultErrorHandle(reason, options.url);
-            };
-
-        if (reject){
-            //If options.useDefaultErrorHandler => also needs to call => Promise.defaultErrorHandler
-            if (options.useDefaultErrorHandler)
-                result = result.catch( function( reason ){
-                    reject( createErrorObject( reason, options.url ) );
-                    return defaultReject.call( null, reason );
-                });
-            else
-                //Just use reject as catch
-                result = result.catch( function( reason ){
-                    return reject( createErrorObject( reason, options.url ) );
-                });
-        }
-        else
-            if (!options.useDefaultErrorHandler)
-                //Prevent the use of Promise.defaultErrorHandler
-                result = result.catch( function(){} );
 
         //Adding finally (if any)
         if (fin || Promise.defaultFinally){
