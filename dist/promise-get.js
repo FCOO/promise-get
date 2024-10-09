@@ -15,13 +15,12 @@
     Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* error: {name, status, message, text, statusText}  */ ){};
 
     function createErrorObject( reason, url ){
-        var response = reason.response,
-            text = response ? response.statusText :
-                    reason.message ? reason.message :
-                    reason;
+        var response = reason.response || {},
+            text = response.statusText || reason.statusText || response.message || reason.message;
+
         return {
             name      : 'Error',
-            status    : response ? response.status : null,
+            status    : response.status || reason.status || null,
             url       : url,
             message   : text,
             text      : text,
@@ -34,7 +33,7 @@
         if (e && e.preventDefault)
             e.preventDefault();
 
-        //Unknown why, but in some browwsers onunhandledrejection is called twice - one time with e.detail
+        //Unknown why, but in some browsers onunhandledrejection is called twice - one time with e.detail
         if (e && e.detail)
             return false;
 
@@ -120,8 +119,6 @@
                             .then(()=> Promise.fetch(url, options) );
                     }
                     else {
-
-                        //console.log('HER', error, reject, options);
                         let error =  createErrorObject(reason, options.url);
                         if (options.reject)
                             options.reject(error);
