@@ -108,7 +108,7 @@
                     if (response.ok)
                         resolve(response);
                     else
-                        return Promise.reject(response);
+                        return Promise.reject(new Error(response));
                 })
                 .catch((/*error*/reason) => {
                     if (options.retries > 0){
