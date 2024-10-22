@@ -15,17 +15,19 @@
     Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* error: {name, status, message, text, statusText}  */ ){};
 
     function createErrorObject( reason, url ){
-        var response = reason.response || {},
-            text = response.statusText || reason.statusText || response.message || reason.message;
+        let response = reason.response || {},
+            text     = response.statusText || reason.statusText || response.message || reason.message,
+            error    = new Error(text, url);
 
-        return {
+        $.extend(error, {
             name      : 'Error',
             status    : response.status || reason.status || null,
             url       : url,
             message   : text,
             text      : text,
             statusText: text
-        };
+        });
+        return error;
     }
 
     //Set event handler for unhandled rejections
@@ -108,7 +110,10 @@
                     if (response.ok)
                         resolve(response);
                     else
-                        return Promise.reject(new Error(response));
+                        return Promise.reject(createErrorObject(response, options.url));
+                        //return Promise.reject(new Error(response));
+                        //return Promise.reject(response);
+                        //return createErrorObject(response, options.url);
                 })
                 .catch((/*error*/reason) => {
                     if (options.retries > 0){
