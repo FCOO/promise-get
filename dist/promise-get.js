@@ -32,6 +32,7 @@
 
     //Set event handler for unhandled rejections
     window.onunhandledrejection = function(e, promise){
+
         if (e && e.preventDefault)
             e.preventDefault();
 
@@ -39,7 +40,20 @@
         if (e && e.detail)
             return false;
 
-        var url = promise && promise.promiseOptions ? promise.promiseOptions.url : null;
+        let url = '';
+
+
+        if (promise){
+            //Try different ways to get the url
+            if (promise.toJSON){
+                const pJSON = promise.toJSON();
+                url = pJSON && pJSON.rejectionReason ? pJSON.rejectionReason.url : '';
+            }
+
+            if (!url)
+                url = promise.promiseOptions ? promise.promiseOptions.url : '';
+        }
+
 
         Promise.defaultErrorHandler( createErrorObject( e, url ) );
     };
@@ -98,8 +112,12 @@
         }, options || {});
 
         //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
-        if (options.noCache)
-            url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+//HER           if (options.noCache)
+//HER               url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+        if (options.noCache && !options.cache)
+            options.cache = 'reload';
+
+
 
         if (Promise.defaultPrefetch && !options.noDefaultPrefetch)
             Promise.defaultPrefetch(url, options);
@@ -109,11 +127,12 @@
                 .then((response) => {
                     if (response.ok)
                         resolve(response);
-                    else
+                    else {
                         return Promise.reject(createErrorObject(response, options.url));
                         //return Promise.reject(new Error(response));
                         //return Promise.reject(response);
                         //return createErrorObject(response, options.url);
+                    }
                 })
                 .catch((/*error*/reason) => {
                     if (options.retries > 0){
@@ -211,10 +230,12 @@
         fin     = fin     || options.finally || options.always;
 
         if (options.context){
-            resolve = resolve ? $.proxy( resolve, options.context ) : null;
-            reject = reject   ? $.proxy( reject,  options.context ) : null;
-            fin    = fin      ? $.proxy( fin,     options.context ) : null;
+            resolve = resolve ? resolve.bind(options.context) : null;
+            reject = reject   ? reject.bind(options.context)  : null;
+            fin    = fin      ? fin.bind(options.context)     : null;
         }
+
+        options.reject = reject;
 
         var result =
             Promise.fetch(url, options) //Get the file

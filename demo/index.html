@@ -88,11 +88,11 @@
                 noCache: true,
                 retries: 3,
                 retryDelay: 1*1000,
-                resolve: function( json ){ console.log('getJSON => ', json ); },
-                
-                useDefaultErrorHandler: !opt.noDefaultError,                
-                reject                : opt.withReject ? myErrorHandler : null,
-            });
+                useDefaultErrorHandler: !opt.noDefaultError
+                },                
+                function( json ){ console.log('getJSON => ', json ); },
+                opt.withReject ? myErrorHandler : null,
+            );
         }
 
         function readYAMLFile(withError, withReject){
