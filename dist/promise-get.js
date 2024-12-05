@@ -111,11 +111,12 @@
 */
         }, options || {});
 
-        //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
-//HER           if (options.noCache)
-//HER               url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
-        if (options.noCache && !options.cache)
-            options.cache = 'reload';
+        //Adding parame dummy=12345678 if options.noCache: true to force no-cache
+        if (options.noCache)
+            url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+        //Tried cache: 'reload' but did not seam to work
+        //if (options.noCache && !options.cache)
+        //    options.cache = 'reload';
 
 
 
