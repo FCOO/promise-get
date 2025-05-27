@@ -13,7 +13,10 @@
 <body>
 	<script src="bower_components.js"></script>
 	<script src="../src/promise-get.js"></script>
+	<script src="../src/xml2json.js"></script>
 	<script>
+
+
         function myErrorHandler( error ){
 
             console.log('*********************');
@@ -80,8 +83,8 @@
         }
 
         function readJSONFile(opt={}){
-        // opt = {withError, withReject, doNotExists, noDefaultError}            
-            const fileName = opt.withError   ?  'data/witherror.json' : 
+        // opt = {withError, withReject, doNotExists, noDefaultError}
+            const fileName = opt.withError   ?  'data/witherror.json' :
                              opt.doNotExists ?  'data/notfound.json' :
                                             'data/demo.json';
             Promise.getJSON(fileName, {
@@ -89,7 +92,7 @@
                 retries: 3,
                 retryDelay: 1*1000,
                 useDefaultErrorHandler: !opt.noDefaultError
-                },                
+                },
                 function( json ){ console.log('getJSON => ', json ); },
                 opt.withReject ? myErrorHandler : null,
             );
@@ -109,11 +112,12 @@
            );
         }
 
-        function readXMLFile(withError, withReject){
+        function readXMLFile(withError, withReject, asJSON){
             Promise.getXML(
                 withError ? 'data/witherror.xml' : 'data/demo.xml', {
                     resolve: function( xml ){ console.log('getXML => ', xml ); },
-                    reject : withReject ? myErrorHandler : null
+                    reject : withReject ? myErrorHandler : null,
+                    asJSON : asJSON
                 }
            );
         }
@@ -143,17 +147,18 @@
 
     <button onClick="javascript:readJSONFile({doNotExists: true, withReject: false, noDefaultError: true})">Read JSON file that do not exists. Retry 3 times with 1 sec interval. NO error</button><br>
     <button onClick="javascript:readJSONFile({doNotExists: true, withReject: true, noDefaultError: true})">Read JSON file that do not exists. Retry 3 times with 1 sec interval. Only OWN error</button><br>
-<!-- 
+<!--
     <button onClick="javascript:readJSONFile(false, true, true)">Read JSON file that do not exists. Retry 3 times with 2 sec interval. No error</button><br>
     <button onClick="javascript:readJSONFile(true)">Read JSON file with syntax error</button><br>
     <button onClick="javascript:readJSONFile(true, true)">Read JSON file with syntax error, with ONLY own error-handler</button><br>
- -->    
+ -->
     <hr>
     <button onClick="javascript:readYAMLFile()">Read YAML file</button><br>
     <button onClick="javascript:readYAMLFile(true)">Read YAML file with syntax error</button><br>
     <button onClick="javascript:readYAMLFile(true, true)">Read YAML file with syntax error, with own error-handler</button><br>
     <hr>
     <button onClick="javascript:readXMLFile()">Read XML file</button><br>
+    <button onClick="javascript:readXMLFile(false, false, true)">Read XML file as JSON</button><br>
     <button onClick="javascript:readXMLFile(true)">Read XML file with syntax error</button><br>
     <button onClick="javascript:readXMLFile(true, true)">Read XML file with syntax error, with own error-handler</button><br>
 

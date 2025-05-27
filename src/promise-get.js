@@ -265,6 +265,9 @@
                     result
                         .then( function(response) { return response.text(); })
                         .then( parseXML );
+
+                if (options.asJSON)
+                    result = result.then( function(xml){ return window.xmlToJSON(xml); });
                 break;
         }
 
