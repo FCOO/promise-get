@@ -14,6 +14,7 @@
 	<script src="bower_components.js"></script>
 	<script src="../src/promise-get.js"></script>
 	<script src="../src/xml2json.js"></script>
+	<script src="../src/xml2json2.js"></script>
 	<script>
 
 
@@ -122,6 +123,14 @@
            );
         }
 
+        function readXMLFile2(asJSON){
+            Promise.getXML(
+                'data/test.xml', {
+                    resolve: function( xml ){ console.log('getXML => ', xml ); },
+                    asJSON : asJSON
+                }
+           );
+        }
 
         Promise.defaultErrorHandler = function( error ){
             console.log('*********************');
@@ -161,6 +170,9 @@
     <button onClick="javascript:readXMLFile(false, false, true)">Read XML file as JSON</button><br>
     <button onClick="javascript:readXMLFile(true)">Read XML file with syntax error</button><br>
     <button onClick="javascript:readXMLFile(true, true)">Read XML file with syntax error, with own error-handler</button><br>
+    <hr>
+    <button onClick="javascript:readXMLFile2()">Read XML file-2</button><br>
+    <button onClick="javascript:readXMLFile2(true)">Read XML file-2 as JSON</button><br>
 
 
 </body>
