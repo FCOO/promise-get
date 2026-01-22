@@ -1,51 +1,44 @@
-/***************************************************************************
-js-yaml 4.1.1 https://github.com/nodeca/js-yaml @license MIT
 
-Adjusted ES5 version by Niel sHolt
-***************************************************************************/
-//HER   (function (global, factory) {
+/*! js-yaml 4.1.1 https://github.com/nodeca/js-yaml @license MIT */
+(function (global, factory) {
 //HER     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 //HER     typeof define === 'function' && define.amd ? define(['exports'], factory) :
 //HER     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jsyaml = {}));
-//HER     let exports = {};
-//HER   })(this, ( function (exports) { 'use strict';
+  let exports = {};
+})(this, ( function (exports) { 'use strict';
 
-(function ($, window /*, document, undefined*/) {
-    "use strict";
+  function isNothing(subject) {
+    return (typeof subject === 'undefined') || (subject === null);
+  }
 
 
-    function isNothing(subject) {
-        return (typeof subject === 'undefined') || (subject === null);
+  function isObject(subject) {
+    return (typeof subject === 'object') && (subject !== null);
+  }
+
+
+  function toArray(sequence) {
+    if (Array.isArray(sequence)) return sequence;
+    else if (isNothing(sequence)) return [];
+
+    return [ sequence ];
+  }
+
+
+  function extend(target, source) {
+    var index, length, key, sourceKeys;
+
+    if (source) {
+      sourceKeys = Object.keys(source);
+
+      for (index = 0, length = sourceKeys.length; index < length; index += 1) {
+        key = sourceKeys[index];
+        target[key] = source[key];
+      }
     }
 
-
-    function isObject(subject) {
-        return (typeof subject === 'object') && (subject !== null);
-    }
-
-
-    function toArray(sequence) {
-        if (Array.isArray(sequence)) return sequence;
-        else if (isNothing(sequence)) return [];
-
-        return [ sequence ];
-    }
-
-
-    function extend(target, source) {
-        var index, length, key, sourceKeys;
-
-        if (source) {
-            sourceKeys = Object.keys(source);
-
-            for (index = 0, length = sourceKeys.length; index < length; index += 1) {
-                key = sourceKeys[index];
-                target[key] = source[key];
-            }
-        }
-
-        return target;
-    }
+    return target;
+  }
 
 
   function repeat(string, count) {
@@ -72,12 +65,12 @@ Adjusted ES5 version by Niel sHolt
   var extend_1         = extend;
 
   var common = {
-      isNothing: isNothing_1,
-      isObject: isObject_1,
-      toArray: toArray_1,
-      repeat: repeat_1,
-      isNegativeZero: isNegativeZero_1,
-      extend: extend_1
+  	isNothing: isNothing_1,
+  	isObject: isObject_1,
+  	toArray: toArray_1,
+  	repeat: repeat_1,
+  	isNegativeZero: isNegativeZero_1,
+  	extend: extend_1
   };
 
   // YAML error class. http://stackoverflow.com/questions/8458984
@@ -1125,7 +1118,6 @@ Adjusted ES5 version by Niel sHolt
   var CHOMPING_STRIP = 2;
   var CHOMPING_KEEP  = 3;
 
-  /* eslint-disable no-control-regex,no-useless-escape */
 
   var PATTERN_NON_PRINTABLE         = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/;
   var PATTERN_NON_ASCII_LINE_BREAKS = /[\x85\u2028\u2029]/;
@@ -2838,8 +2830,8 @@ Adjusted ES5 version by Niel sHolt
   var load_1    = load$1;
 
   var loader = {
-      loadAll: loadAll_1,
-      load: load_1
+  	loadAll: loadAll_1,
+  	load: load_1
   };
 
   /*eslint-disable no-use-before-define*/
@@ -3807,7 +3799,7 @@ Adjusted ES5 version by Niel sHolt
   var dump_1 = dump$1;
 
   var dumper = {
-      dump: dump_1
+  	dump: dump_1
   };
 
   function renamed(from, to) {
@@ -3852,22 +3844,22 @@ Adjusted ES5 version by Niel sHolt
   var safeDump            = renamed('safeDump', 'dump');
 
   var jsYaml = {
-      Type: Type,
-      Schema: Schema,
-      FAILSAFE_SCHEMA: FAILSAFE_SCHEMA,
-      JSON_SCHEMA: JSON_SCHEMA,
-      CORE_SCHEMA: CORE_SCHEMA,
-      DEFAULT_SCHEMA: DEFAULT_SCHEMA,
-      load: load,
-      loadAll: loadAll,
-      dump: dump,
-      YAMLException: YAMLException,
-      types: types,
-      safeLoad: safeLoad,
-      safeLoadAll: safeLoadAll,
-      safeDump: safeDump
+  	Type: Type,
+  	Schema: Schema,
+  	FAILSAFE_SCHEMA: FAILSAFE_SCHEMA,
+  	JSON_SCHEMA: JSON_SCHEMA,
+  	CORE_SCHEMA: CORE_SCHEMA,
+  	DEFAULT_SCHEMA: DEFAULT_SCHEMA,
+  	load: load,
+  	loadAll: loadAll,
+  	dump: dump,
+  	YAMLException: YAMLException,
+  	types: types,
+  	safeLoad: safeLoad,
+  	safeLoadAll: safeLoadAll,
+  	safeDump: safeDump
   };
-/*
+
   exports.CORE_SCHEMA = CORE_SCHEMA;
   exports.DEFAULT_SCHEMA = DEFAULT_SCHEMA;
   exports.FAILSAFE_SCHEMA = FAILSAFE_SCHEMA;
@@ -3883,529 +3875,9 @@ Adjusted ES5 version by Niel sHolt
   exports.safeLoad = safeLoad;
   exports.safeLoadAll = safeLoadAll;
   exports.types = types;
-*/
-//HER   console.log(jsYaml);
 
-//HER     Object.defineProperty(exports, '__esModule', { value: true });
+console.log(jsYaml);
 
-//HER   }));
+  Object.defineProperty(exports, '__esModule', { value: true });
 
-    window.jsyaml = jsYaml;
-
-}(jQuery, this, document));
-
-;
-/****************************************************************************
-    promise-get.js,
-
-    (c) 2017, FCOO
-
-    https://github.com/FCOO/promise-get
-    https://github.com/FCOO
-
-****************************************************************************/
-
-(function ($, window, Promise/*, document, undefined*/) {
-    "use strict";
-
-    //Create a default error-handle. Can be overwritten
-    Promise.defaultErrorHandler = Promise.defaultErrorHandler || function( /* error: {name, status, message, text, statusText}  */ ){};
-
-    function createErrorObject( reason, url ){
-        let response = reason.response || {},
-            text     = response.statusText || reason.statusText || response.message || reason.message,
-            error    = new Error(text, url);
-
-        $.extend(error, {
-            name      : 'Error',
-            status    : response.status || reason.status || null,
-            url       : url,
-            message   : text,
-            text      : text,
-            statusText: text
-        });
-        return error;
-    }
-
-    //Set event handler for unhandled rejections
-    window.onunhandledrejection = function(e, promise){
-
-        if (e && e.preventDefault)
-            e.preventDefault();
-
-        //Unknown why, but in some browsers onunhandledrejection is called twice - one time with e.detail
-        if (e && e.detail)
-            return false;
-
-        let url = '';
-
-
-        if (promise){
-            //Try different ways to get the url
-            if (promise.toJSON){
-                const pJSON = promise.toJSON();
-                url = pJSON && pJSON.rejectionReason ? pJSON.rejectionReason.url : '';
-            }
-
-            if (!url)
-                url = promise.promiseOptions ? promise.promiseOptions.url : '';
-        }
-
-
-        Promise.defaultErrorHandler( createErrorObject( e, url ) );
-    };
-
-    //Promise.defaultPrefetch = function(url, options): To be called before ALL fetch
-    Promise.defaultPrefetch = null;
-
-    //Promise.defaultFinally = function(): To be called as finally for ALL Promise.get
-    Promise.defaultFinally = null;
-
-    /**************************************************************
-    Promise.fetch( url, options )
-    Fetch the url.
-    Retries up to options.retries times with delay between of options.retryDeday ms
-    Princip taken from https://medium.com/@yshen4/javascript-fetch-with-retry-fb7e2e8f8cad
-
-    Original code from https://medium.com/@yshen4/javascript-fetch-with-retry-fb7e2e8f8cad:
-
-    const wait = (delay) => (new Promise((resolve) => setTimeout(resolve, delay)));
-    Promise.fetchWithRetry = function(url, tries=2){
-        fetch(url)
-            .then( (response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    // 1. throw a new exception
-                    if (res.status === 401) throw new 4xxError('Not authorized', response)
-                    if (res.status === 404) throw new 4xxError(`Resource doesn't exist`, response)
-                    // 2. reject instead of throw, peferred
-                    return Promise.reject(response);
-                }
-            })
-            .catch( (error) => {
-                if (error instanceof 4xxError || tries < 1) {
-                    throw error;
-                } else {
-                    //Retry network error or 5xx errors
-                    const delay = Math.floor(Math.random() * 1000);
-                    wait(delay).then(()=> Promise.fetchWithRetry(url, tries - 1));
-                }
-            })
-    }
-    **************************************************************/
-    const wait = (delay) => (new Promise((resolve) => setTimeout(resolve, delay)));
-    Promise.fetch = function(url, options) {
-        options = $.extend( {}, {
-            retries   : 3,
-            retryDelay: 1000,
-            noCache   : false,
-            //            cache     : 'reload',  //TODO: Check if it works
-/*REMOVE FOR NOW. NEED TO FIND A WAY TO FORCE NO-CACHE
-            headers   : {
-                "Cache-Control": 'no-cache'    //TODO: Check if this works
-            }
-*/
-        }, options || {});
-
-        //Adding parame dummy=12345678 if options.noCache: true to force no-cache
-        if (options.noCache)
-            url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
-        //Tried cache: 'reload' but did not seam to work
-        //if (options.noCache && !options.cache)
-        //    options.cache = 'reload';
-
-
-
-        if (Promise.defaultPrefetch && !options.noDefaultPrefetch)
-            Promise.defaultPrefetch(url, options);
-
-        return new Promise(function(resolve, reject) {
-            fetch(url, options)
-                .then((response) => {
-                    if (response.ok)
-                        resolve(response);
-                    else {
-                        return Promise.reject(createErrorObject(response, options.url));
-                        //return Promise.reject(new Error(response));
-                        //return Promise.reject(response);
-                        //return createErrorObject(response, options.url);
-                    }
-                })
-                .catch((/*error*/reason) => {
-                    if (options.retries > 0){
-                        options.retries--;
-                        options.noCache = false;
-                        options.noDefaultPrefetch = true;
-                        wait(options.retryDelay)
-                            .then(()=> Promise.fetch(url, options) );
-                    }
-                    else {
-                        let error =  createErrorObject(reason, options.url);
-                        if (options.reject)
-                            options.reject(error);
-                        if (options.useDefaultErrorHandler)
-                            reject(error);
-                    }
-                });
-        });
-    };
-
-
-
-    /**************************************************************
-    Promise.get( url, options[, resolve[, reject[, finally]]] )
-    Get the file at url.
-
-    resolve || options.resolve || options.done = function( response )
-    reject  || options.reject || options.fail = function( error )
-    finally || options.finally || options.always = function( ?? )
-
-    options
-        retries: 0
-        context: null
-        format: null (text,json, xml)
-        useDefaultErrorHandler: true => use defaultErrorHandler even if a reject-function is given
-
-    **************************************************************/
-    function checkStatus(response) {
-        if (response.status >= 200 && response.status < 300) {
-            return response;
-        }
-        else {
-            var error = new Error(response.statusText);
-            error.response = response;
-            throw error;
-        }
-    }
-
-
-    function parseYAML( response ){
-        var json;
-
-        try{
-            json = window.jsyaml.load(response);
-        }
-        catch (e){
-            json = undefined;
-            var error = new Error("Invalid YAML");
-            throw error;
-        }
-        return json;
-    }
-
-    function parseXML( response ){
-        //Adjusted xml-parser from jQuery.jQuery.parseXML
-        var xml;
-
-        // Support: IE 9 - 11 only
-        // IE throws on parseFromString with invalid input.
-        try {
-            xml = ( new window.DOMParser() ).parseFromString( response, "text/xml" );
-        }
-        catch ( e ) {
-            xml = undefined;
-        }
-
-        if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
-            var error = new Error("Invalid XML");
-            throw error;
-        }
-        return xml;
-    }
-
-
-    Promise.get = function(url, options, resolve, reject, fin) {
-        options = $.extend({}, {
-            //Default options
-            url                   : url,
-            useDefaultErrorHandler: true,
-            retries               : 0
-        }, options || {} );
-
-        resolve = resolve || options.resolve || options.done;
-        reject  = reject  || options.reject  || options.fail;
-        fin     = fin     || options.finally || options.always;
-
-        if (options.context){
-            resolve = resolve ? resolve.bind(options.context) : null;
-            reject = reject   ? reject.bind(options.context)  : null;
-            fin    = fin      ? fin.bind(options.context)     : null;
-        }
-
-        options.reject = reject;
-
-        var result =
-            Promise.fetch(url, options) //Get the file
-            .then(checkStatus);         //Check for status of the response
-
-        switch (options.format){
-            case 'text':
-                result =
-                    result
-                        .then( function(response) { return response.text(); });
-                break;
-            case 'json':
-                result =
-                    result
-                        .then( function(response) { return response.text(); })
-                        .then( JSON.parse );
-                break;
-            case 'yaml':
-                result =
-                    result
-                        .then( function(response) { return response.text(); })
-                        .then( parseYAML );
-                break;
-            case 'xml' :
-                result =
-                    result
-                        .then( function(response) { return response.text(); })
-                        .then( parseXML );
-
-                if (options.asJSON)
-                    result = result.then( function(xml){ return window.xmlToJSON(xml); });
-                break;
-        }
-
-        if (resolve)
-            result = result.then( resolve );
-
-        //Adding finally (if any)
-        if (fin || Promise.defaultFinally){
-            var finFunc =   fin && Promise.defaultFinally ?
-                            function(){
-                                fin.apply(null, arguments);
-                                Promise.defaultFinally.apply(null, arguments);
-                            } : fin || Promise.defaultFinally;
-
-            result = result.finally( finFunc );
-        }
-
-        result.promiseOptions = options;
-        return result;
-    };
-
-    /**************************************************************
-    Promise.getText( url, options[, resolve[, reject[, finally]]] )
-    Same as Promise.get with format = 'text'
-    **************************************************************/
-    Promise.getText = function(url, options, resolve, reject, fin) {
-        return Promise.get( url,
-                            $.extend( {}, options , { format: 'text' }),
-                            resolve, reject, fin );
-    };
-
-    /**************************************************************
-    Promise.getJSON( url, options[, resolve[, reject[, finally]]] )
-    Same as Promise.get with format = 'json'
-    **************************************************************/
-    Promise.getJSON = function(url, options, resolve, reject, fin) {
-        return Promise.get( url,
-                            $.extend( {}, options , { format: 'json' }),
-                            resolve, reject, fin );
-    };
-
-    /**************************************************************
-    Promise.getXML( url, options[, resolve[, reject[, finally]]] )
-    Same as Promise.get with format = 'xml'
-    **************************************************************/
-    Promise.getXML = function(url, options, resolve, reject, fin) {
-        return Promise.get( url,
-                            $.extend( {}, options , { format: 'xml' }),
-                            resolve, reject, fin );
-    };
-
-    /**************************************************************
-    Promise.getYAML( url, options[, resolve[, reject[, finally]]] )
-    Same as Promise.get with format = 'yaml'.
-    Data are converted to json
-    **************************************************************/
-    Promise.getYAML = function(url, options, resolve, reject, fin) {
-        return Promise.get( url,
-                            $.extend( {}, options , { format: 'yaml' }),
-                            resolve, reject, fin );
-    };
-
-}(jQuery, this, Promise, document));
-
-
-;
-/****************************************************************************
-This work is licensed under Creative Commons GNU LGPL License.
-
-License: http://creativecommons.org/licenses/LGPL/2.1/
-Version: 0.9
-Author:  Stefan Goessner/2006
-Web:     http://goessner.net/
-****************************************************************************/
-
-(function (window /*, document, undefined*/) {
-    "use strict";
-
-function xml2json(xml, tab) {
-   var X = {
-      toObj: function(xml) {
-         var o = {}, n;
-         if (xml.nodeType==1) {   // element node ..
-            if (xml.attributes.length)   // element with attributes  ..
-               for (var i=0; i<xml.attributes.length; i++)
-                  o["@"+xml.attributes[i].nodeName] = (xml.attributes[i].nodeValue||"").toString();
-            if (xml.firstChild) { // element has child nodes ..
-               var textChild=0, cdataChild=0, hasElementChild=false;
-               for (n=xml.firstChild; n; n=n.nextSibling) {
-                  if (n.nodeType==1) hasElementChild = true;
-                  else if (n.nodeType==3 && n.nodeValue.match(/[^ \f\n\r\t\v]/)) textChild++; // non-whitespace text
-                  else if (n.nodeType==4) cdataChild++; // cdata section node
-               }
-               if (hasElementChild) {
-                  if (textChild < 2 && cdataChild < 2) { // structured element with evtl. a single text or/and cdata node ..
-                     X.removeWhite(xml);
-                     for (n=xml.firstChild; n; n=n.nextSibling) {
-                        if (n.nodeType == 3)  // text node
-                           o["#text"] = X.escape(n.nodeValue);
-                        else if (n.nodeType == 4)  // cdata node
-                           o["#cdata"] = X.escape(n.nodeValue);
-                        else if (o[n.nodeName]) {  // multiple occurence of element ..
-                           if (o[n.nodeName] instanceof Array)
-                              o[n.nodeName][o[n.nodeName].length] = X.toObj(n);
-                           else
-                              o[n.nodeName] = [o[n.nodeName], X.toObj(n)];
-                        }
-                        else  // first occurence of element..
-                           o[n.nodeName] = X.toObj(n);
-                     }
-                  }
-                  else { // mixed content
-                     if (!xml.attributes.length)
-                        o = X.escape(X.innerXml(xml));
-                     else
-                        o["#text"] = X.escape(X.innerXml(xml));
-                  }
-               }
-               else if (textChild) { // pure text
-                  if (!xml.attributes.length)
-                     o = X.escape(X.innerXml(xml));
-                  else
-                     o["#text"] = X.escape(X.innerXml(xml));
-               }
-               else if (cdataChild) { // cdata
-                  if (cdataChild > 1)
-                     o = X.escape(X.innerXml(xml));
-                  else
-                     for (n=xml.firstChild; n; n=n.nextSibling)
-                        o["#cdata"] = X.escape(n.nodeValue);
-               }
-            }
-            if (!xml.attributes.length && !xml.firstChild) o = null;
-         }
-         else if (xml.nodeType==9) { // document.node
-            o = X.toObj(xml.documentElement);
-         }
-         else
-            alert("unhandled node type: " + xml.nodeType);
-         return o;
-      },
-      toJson: function(o, name, ind) {
-         var json = name ? ("\""+name+"\"") : "";
-         if (o instanceof Array) {
-            for (var i=0,n=o.length; i<n; i++)
-               o[i] = X.toJson(o[i], "", ind+"\t");
-            json += (name?":[":"[") + (o.length > 1 ? ("\n"+ind+"\t"+o.join(",\n"+ind+"\t")+"\n"+ind) : o.join("")) + "]";
-         }
-         else if (o == null)
-            json += (name&&":") + "null";
-         else if (typeof(o) == "object") {
-            var arr = [];
-            for (var m in o)
-               arr[arr.length] = X.toJson(o[m], m, ind+"\t");
-            json += (name?":{":"{") + (arr.length > 1 ? ("\n"+ind+"\t"+arr.join(",\n"+ind+"\t")+"\n"+ind) : arr.join("")) + "}";
-         }
-         else if (typeof(o) == "string")
-            json += (name&&":") + "\"" + o.toString() + "\"";
-         else
-            json += (name&&":") + o.toString();
-         return json;
-      },
-      innerXml: function(node) {
-         var s = "";
-         if ("innerHTML" in node)
-            s = node.innerHTML;
-         else {
-            var asXml = function(n) {
-               var s = "";
-               if (n.nodeType == 1) {
-                  s += "<" + n.nodeName;
-                  for (var i=0; i<n.attributes.length;i++)
-                     s += " " + n.attributes[i].nodeName + "=\"" + (n.attributes[i].nodeValue||"").toString() + "\"";
-                  if (n.firstChild) {
-                     s += ">";
-                     for (var c=n.firstChild; c; c=c.nextSibling)
-                        s += asXml(c);
-                     s += "</"+n.nodeName+">";
-                  }
-                  else
-                     s += "/>";
-               }
-               else if (n.nodeType == 3)
-                  s += n.nodeValue;
-               else if (n.nodeType == 4)
-                  s += "<![CDATA[" + n.nodeValue + "]]>";
-               return s;
-            };
-            for (var c=node.firstChild; c; c=c.nextSibling)
-               s += asXml(c);
-         }
-         return s;
-      },
-      escape: function(txt) {
-         return txt.replace(/[\\]/g, "\\\\")
-                   .replace(/["]/g, '\\"')
-                   .replace(/[\n]/g, '\\n')
-                   .replace(/[\r]/g, '\\r');
-      },
-      removeWhite: function(e) {
-         e.normalize();
-         for (var n = e.firstChild; n; ) {
-            if (n.nodeType == 3) {  // text node
-               if (!n.nodeValue.match(/[^ \f\n\r\t\v]/)) { // pure whitespace text node
-                  var nxt = n.nextSibling;
-                  e.removeChild(n);
-                  n = nxt;
-               }
-               else
-                  n = n.nextSibling;
-            }
-            else if (n.nodeType == 1) {  // element node
-               X.removeWhite(n);
-               n = n.nextSibling;
-            }
-            else                      // any other node
-               n = n.nextSibling;
-         }
-         return e;
-      }
-   };
-   if (xml.nodeType == 9) // document node
-      xml = xml.documentElement;
-   var json = X.toJson(X.toObj(X.removeWhite(xml)), xml.nodeName, "\t");
-   return "{\n" + tab + (tab ? json.replace(/\t/g, tab) : json.replace(/\t|\n/g, "")) + "\n}";
-}
-
-
-window.xmlToJSON = function(xml) {
-    let jsonStr = xml2json(xml, ''),
-        json    = null;
-
-    try {
-        json = JSON.parse(jsonStr);
-    }
-    catch (error){
-        json = null;
-    }
-    return json;
-};
-
-}(this, document));
-
-
+}));

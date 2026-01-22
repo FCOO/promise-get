@@ -1,4 +1,9 @@
 ---
+ defaults: &default_settings
+   golden-rings: 50
+   silver-ring: 30
+ 
+
  doe: "a deer, a female deer"
  ray: "a drop of golden sun"
  pi: 3.14159
@@ -10,6 +15,7 @@
    - louie
    - fred
  xmas-fifth-day:
+   <<: *default_settings  # Merges all key-value pairs from default_settings
    calling-birds: four
    french-hens: 3
    golden-rings: 5

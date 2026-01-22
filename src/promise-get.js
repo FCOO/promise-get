@@ -187,7 +187,7 @@
         var json;
 
         try{
-            json = window.YAML.parse(response);
+            json = window.jsyaml.load(response);
         }
         catch (e){
             json = undefined;

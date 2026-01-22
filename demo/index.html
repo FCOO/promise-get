@@ -14,7 +14,7 @@
 	<script src="bower_components.js"></script>
 	<script src="../src/promise-get.js"></script>
 	<script src="../src/xml2json.js"></script>
-	<script src="../src/xml2json2.js"></script>
+    <script src="../src/js-yaml.js"></script>
 	<script>
 
 
@@ -102,7 +102,7 @@
         function readYAMLFile(withError, withReject){
             Promise.getYAML(
                 //'http://fcoo.github.io/jquery-bootstrap/demo/data/demo.txt',
-                withError ? 'data/witherror.yaml.txt' : 'data/demo.yaml.txt', {
+                withError ? 'data/witherror.yaml' : 'data/demo.yaml', {
                     noCache: true,
                     retries: 3,
                     retryDelay: 1000,
