@@ -187,7 +187,7 @@
         var json;
 
         try{
-            json = window.jsyaml.load(response);
+            json = window.jsyaml.load(response, {schema: window.jsyaml.JSON_SCHEMA});
         }
         catch (e){
             json = undefined;
